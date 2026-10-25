@@ -3,6 +3,9 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 
+
+
+
 function getUtcDayKey(date: Date): string {
   return date.toISOString().slice(0, 10);
 }

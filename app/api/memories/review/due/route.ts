@@ -1,9 +1,14 @@
 
-import { NextResponse } from "next/server";
+import { connection, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 
+
+
+
 export async function GET() {
+  
+ 
   try {
     const session = await getSession();
 

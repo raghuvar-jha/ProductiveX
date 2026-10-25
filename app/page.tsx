@@ -4,13 +4,14 @@ import Dashboard from "@/component/Dashboard";
 import DesktopApp from "@/component/DesktopApp";
 import Login from "@/component/Login";
 import HomePage from "@/component/HomePage";
+import { Suspense } from "react";
 
 export default function Page() {
   return (
     <>
-      <div>
-        <HomePage />
-      </div>
+      <Suspense fallback={<div>Loading ProductiveX...</div>}>
+      <HomePage />
+    </Suspense>
       
       
     </>

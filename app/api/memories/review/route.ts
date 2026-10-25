@@ -1,13 +1,18 @@
 
-import { NextRequest, NextResponse } from "next/server";
+import { connection, NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 
+
+
 const validRatings = ["again", "hard", "good", "easy"] as const;
+
 
 type Rating = (typeof validRatings)[number];
 
 export async function POST(request: NextRequest) {
+
+  
   try {
     const session = await getSession();
 
