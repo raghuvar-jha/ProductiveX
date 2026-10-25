@@ -1,0 +1,150 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TaskStatus {
+  todo
+  inprogress
+  completed
+}
+
+enum HabitFrequency {
+  daily
+  weekdays
+  weekly
+  custom
+}
+
+enum FocusMode {
+  pomodoro
+  shortBreak
+  longBreak
+}
+
+enum MemoryRating {
+  again
+  hard
+  good
+  easy
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  tasks              Task[]
+  habits             Habit[]
+  memoryDecks        MemoryDeck[]
+  memoryReviewLogs   MemoryReviewLog[]
+  focusSessions      FocusSession[]
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  status      TaskStatus @default(todo)
+  dueDate     DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, status])
+}
+
+model Habit {
+  id            String         @id @default(cuid())
+  name          String
+  description   String?
+  frequency     HabitFrequency
+  targetPerWeek Int
+  scheduledDays Int[]
+  goal          String
+  color         String
+  icon          String
+  createdAt     DateTime       @default(now())
+  completions   String[]
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model MemoryDeck {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String   @default("")
+  color       String   @default("#6366f1")
+  icon        String   @default("book-open")
+  createdAt   DateTime @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  cards       Flashcard[]
+  reviewLogs  MemoryReviewLog[]
+
+  @@index([userId])
+}
+
+model Flashcard {
+  id              Int       @id @default(autoincrement())
+  front           String
+  back            String
+  createdAt       DateTime  @default(now())
+  dueAt           DateTime?
+  intervalDays    Int       @default(0)
+  repetitions     Int       @default(0)
+  lastReviewedAt  DateTime?
+
+  deckId Int
+  deck   MemoryDeck @relation(fields: [deckId], references: [id], onDelete: Cascade)
+
+  reviewLogs MemoryReviewLog[]
+
+  @@index([deckId])
+  @@index([deckId, dueAt])
+}
+
+model MemoryReviewLog {
+  id         Int          @id @default(autoincrement())
+  rating     MemoryRating
+  reviewedAt DateTime     @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  cardId Int
+  card   Flashcard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  deckId Int?
+  deck   MemoryDeck? @relation(fields: [deckId], references: [id], onDelete: SetNull)
+
+  @@index([userId, reviewedAt])
+  @@index([cardId])
+}
+
+model FocusSession {
+  id              String    @id @default(cuid())
+  mode            FocusMode
+  durationSeconds Int
+  completedAt     DateTime  @default(now())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, completedAt])
+}
