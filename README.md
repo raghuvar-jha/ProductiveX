@@ -3,7 +3,7 @@
 
 ## 📸 Preview
 
-![ProductiveX Dashboard](../productivex//screenshots/HomePage.png)
+![ProductiveX Dashboard](/screenshots/HomePage.png)
 
 <p align="center">
   <em>Your productivity, organised in one workspace.</em>
