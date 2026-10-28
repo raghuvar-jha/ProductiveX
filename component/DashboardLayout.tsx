@@ -140,7 +140,7 @@ export default function DashboardLayout({
               <p className="mt-0.5 text-xs font-semibold text-[#a0a19b]">
                 {isError
                   ? "We couldn’t load your profile."
-                  : "Here’s what’s on your plate today."}
+                  : "Let's Go!"}
               </p>
             </div>
 

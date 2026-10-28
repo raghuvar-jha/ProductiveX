@@ -29,6 +29,9 @@ type ReviewItem = {
   deckTitle: string;
 };
 
+const focusRing =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#f16f3a] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fbfaf7]";
+
 const COLORS = [
   "bg-[#8270c7]",
   "bg-[#f07a46]",
@@ -942,7 +945,7 @@ export default function MemoriesPage({
               setFormError("");
               setShowCreateDeck(true);
             }}
-            className="text-[11px] font-extrabold text-[#7561bc]"
+            className={`flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-[#f16f3a] px-3.5 text-xs font-bold text-white shadow-[0_6px_16px_rgba(241,111,58,0.32)] transition hover:bg-[#e9622d] active:scale-[0.97] sm:px-4 ${focusRing}`}
           >
             + Create deck
           </button>
